@@ -4,20 +4,33 @@ import { useRef } from "react";
 
 type DropZoneProps = {
   onCardDrop: (card: CardData) => void;
+  onFailedDrop?: (card: CardData) => void;
   children?: React.ReactNode;
   slotLabel?: string;
+  isOccupied?: boolean;
 };
 
 export default function DropZone({
   onCardDrop,
+  onFailedDrop,
   children,
   slotLabel,
+  isOccupied,
 }: DropZoneProps) {
   const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: "CARD",
     drop: (item: CardData) => {
-      onCardDrop(item);
+      if (!isOccupied) {
+        onCardDrop(item);
+      } else {
+        console.log("Slot zajęty — drop zablokowany");
+        if (onFailedDrop) {
+          onFailedDrop(item);
+        }
+      }
     },
+
+    canDrop: () => !isOccupied,
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
       canDrop: monitor.canDrop(),
@@ -36,7 +49,11 @@ export default function DropZone({
       }`}
     >
       <span className="text-sm text-gray-500 mb-2">{slotLabel}</span>
-      {children || <span className="text-xs text-gray-400">Upuść tutaj</span>}
+      {children || (
+        <span className="text-xs text-gray-400">
+          {isOccupied ? "Zajęte" : "Upuść tutaj"}
+        </span>
+      )}
     </div>
   );
 }

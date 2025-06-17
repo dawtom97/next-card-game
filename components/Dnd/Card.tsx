@@ -6,12 +6,13 @@ import { useDrag } from 'react-dnd';
 export type CardData = {
   id: string;
   label: string;
+  from: 'hand' | 'slot'
 };
 
-export default function Card({ id, label }: CardData) {
+export default function Card({ id, label, from }: CardData) {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'CARD',
-    item: { id, label },
+    item: { id, label, from },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
