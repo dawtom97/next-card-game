@@ -1,68 +1,38 @@
-import { useState } from "react";
-import Card, { CardData } from "./Card";
-import DropZone from "./DropZone";
+import React, {useState} from 'react';
+import {DndContext} from '@dnd-kit/core';
 
-export default function Table() {
-  const [handCards, setHandCards] = useState<CardData[]>([
-    { id: "1", label: "Karta 1", from: "hand" },
-    { id: "2", label: "Karta 2", from: "hand" },
-  ]);
+import {Droppable} from './Droppable';
+import {Draggable} from './Draggable';
 
-  const [slots, setSlots] = useState<(CardData | null)[]>([
-    null,
-    null,
-    null,
-    null,
-  ]);
-
-  const handleDrop = (index: number, card: CardData) => {
-    setSlots((prev) => {
-      if (prev[index] !== null) return prev;
-      const newSlots = [...prev];
-      newSlots[index] = card;
-      return newSlots;
-    });
-
-    setHandCards((prev) => prev.filter((c) => c.id !== card.id));
-  };
-
-  const handleFailedDrop = (card: CardData) => {
-    if (card.from === "hand") {
-      return;
-    }
-
-    setHandCards((prev) => {
-      // If the card is already in hand, do nothing
-      if (prev.some((c) => c.id === card.id)) return prev;
-
-      // Otherwise, add it back to hand
-      return [...prev, { ...card, from: "hand" }];
-    });
-
-    setSlots((prev) => prev.map((c) => (c?.id === card.id ? null : c)));
-  };
+function Table () {
+  const containers = ['A', 'B', 'C'];
+  const [parent, setParent] = useState(null);
+  const draggableMarkup = (
+    <Draggable id="draggable">Drag me</Draggable>
+    
+  );
 
   return (
-    <div className="space-y-8">
-      <div className="flex gap-4">
-        {handCards.map((card) => (
-          <Card key={card.id} {...card} />
-        ))}
-      </div>
+    <DndContext onDragEnd={handleDragEnd}>
+      {parent === null ? draggableMarkup : null}
 
-      <div className="grid grid-cols-2 gap-6 mt-8">
-        {slots.map((card, i) => (
-          <DropZone
-            key={i}
-            onFailedDrop={handleFailedDrop}
-            isOccupied={slots[i] !== null}
-            onCardDrop={(card) => handleDrop(i, card)}
-            slotLabel={`Slot ${i + 1}`}
-          >
-            {card && <Card {...card} />}
-          </DropZone>
-        ))}
-      </div>
-    </div>
+      {containers.map((id) => (
+        // We updated the Droppable component so it would accept an `id`
+        // prop and pass it to `useDroppable`
+        <Droppable key={id} id={id}>
+          {parent === id ? draggableMarkup : 'Drop here'}
+        </Droppable>
+      ))}
+    </DndContext>
   );
-}
+
+  function handleDragEnd(event) {
+    const {over} = event;
+
+    // If the item is dropped over a container, set it as the parent
+    // otherwise reset the parent to `null`
+    setParent(over ? over.id : null);
+  }
+};
+
+export default Table;
