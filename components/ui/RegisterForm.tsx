@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useRegisterMutation } from "@/redux/services/api"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 
 export function RegisterForm({
@@ -55,11 +56,13 @@ export function RegisterForm({
 
     try {
       const result = await register({ email, username, password }).unwrap()
+      toast.success("Registration successful! Please check your email to activate your account.")
       console.log("Registration successful:", result)
       router.push("/auth/activate")
 
     } catch (err) {
-      setError("Registration failed. Please try again.")
+      console.error("Registration failed:", err)
+      setError(`Registration failed. ${err.data.message} `)
     }
   }
 
