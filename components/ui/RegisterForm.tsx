@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { useRegisterMutation } from "@/redux/services/api"
+import { useRouter } from "next/navigation"
 
 
 export function RegisterForm({
@@ -16,7 +19,50 @@ export function RegisterForm({
   ...props
 }: React.ComponentProps<"div">) {
 
-  
+  const [register] = useRegisterMutation()
+
+  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [repeatPassword, setRepeatPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    if (!email || !username || !password || !repeatPassword) {
+      setError("All fields are required")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
+    
+    if (password !== repeatPassword) {
+      setError("Passwords do not match")
+      return
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long")
+      return
+    }
+
+
+    try {
+      const result = await register({ email, username, password }).unwrap()
+      console.log("Registration successful:", result)
+      router.push("/auth/activate")
+
+    } catch (err) {
+      setError("Registration failed. Please try again.")
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -25,14 +71,15 @@ export function RegisterForm({
 
         </CardHeader>
         <CardContent>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Username</Label>
                 <Input
                   id="username"
                   type="text"
-                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
 
@@ -41,9 +88,10 @@ export function RegisterForm({
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
-                    type="email"
+                    type="text"
                     placeholder="m@example.com"
-                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -52,16 +100,27 @@ export function RegisterForm({
                     <Label htmlFor="password">Password</Label>
 
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
 
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="repeat_password">Repeat password</Label>
                   </div>
-                  <Input id="repeat_password" type="password" required />
+                  <Input
+                    id="repeat_password"
+                    type="password"
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                  />
                 </div>
 
+                {error && <div className="text-red-500 text-center">{error}</div>}
                 <Button type="submit" className="w-full">
                   Register
                 </Button>
