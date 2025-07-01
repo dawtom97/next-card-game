@@ -1,5 +1,5 @@
 "use client";
-import { RegisterForm } from "@/components/ui/RegisterForm";
+import { RegisterForm } from "@/components/Auth/RegisterForm";
 import { GalleryVerticalEnd } from "lucide-react";
 
 const RegisterPage = () => {

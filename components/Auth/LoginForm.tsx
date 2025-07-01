@@ -30,8 +30,8 @@ export function LoginForm({
     e.preventDefault()
 
     try {
-      const result = await login({ username, password }).unwrap()
-      console.log("Login successful:", result)
+      await login({ username, password }).unwrap()
+      console.log("Login successful")
       router.push("/")
     }
     catch (error) {

@@ -55,9 +55,9 @@ export function RegisterForm({
 
 
     try {
-      const result = await register({ email, username, password }).unwrap()
+      await register({ email, username, password }).unwrap()
       toast.success("Registration successful! Please check your email to activate your account.")
-      console.log("Registration successful:", result)
+      console.log("Registration successful")
       router.push("/auth/activate")
 
     } catch (err) {
