@@ -21,10 +21,10 @@ export const api = createApi({
     }),
 
     activate: builder.mutation({
-      query: ({ email, code }) => ({
+      query: ({ email, verifyCode }) => ({
         url: '/activate',
         method: 'POST',
-        body: { email, code},
+        body: { email, verifyCode },
       }),
     }),
 
@@ -38,4 +38,4 @@ export const api = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = api;
+export const { useRegisterMutation, useLoginMutation, useActivateMutation } = api;
