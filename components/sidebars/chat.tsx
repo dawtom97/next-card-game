@@ -29,7 +29,7 @@ export function ChatSidebar({
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && onSendMessage) {
-      onSendMessage(input, username, "1337");
+      onSendMessage(input, username, "685c1031a26c0e074428852a");
       setInput("");
     }
   };
