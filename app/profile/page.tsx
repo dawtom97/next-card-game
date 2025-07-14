@@ -18,7 +18,7 @@ export default function UserProfile() {
   return (
     <Card className="max-w-2xl mx-auto p-6">
       <div className="flex flex-col items-center gap-2 relative">
-        <button className="absolute top-2 right-2 bg-white text-gray-600 font-semibold px-3 py-1 rounded shadow hover:bg-gray-200 border-1 border-gray-200 transition">
+        <button className="absolute top-2 right-2 bg-white text-gray-600 font-semibold px-3 py-1 rounded shadow hover:bg-gray-200 border-1 border-gray-200 transition" onClick={() => window.location.href = "/profile/edit"}>
           Edit Profile
         </button>
 

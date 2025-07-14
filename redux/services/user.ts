@@ -19,7 +19,14 @@ export const user = createApi({
         method: "GET",
       }),
     }),
+    editUser: builder.mutation({
+      query: ({ id, avatar, username }) => ({
+        url: `/${id}/edit-user`,
+        method: "POST",
+        body: { avatar, username },
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery, useGetMeQuery } = user;
+export const { useGetAllUsersQuery, useGetMeQuery, useEditUserMutation } = user;

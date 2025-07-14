@@ -9,36 +9,20 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { useGetMeQuery } from "@/redux/services/user";
 
 // pages/index.tsx
 
 export default function Home() {
-  const [username, setUsername] = useState("")
-  const [avatar, setAvatar] = useState("")
+  const userId = Cookies.get("userId")
 
-  useEffect(() => {
-    const userId = Cookies.get("userId")
+  const {data: user} = useGetMeQuery(userId);
 
-    console.log("Pobrano userId z ciasteczek:", userId)
-
-    if (userId) {
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`)
-        .then(res => {
-          return res.json();
-        })
-        .then(data => {
-          setUsername(data.username);
-          setAvatar(data.avatar)
-        })
-        .catch(err => {
-          console.error("Błąd podczas pobierania użytkownika:", err);
-        });
-    }
-  }, [])
-
+  if(!user) {
+    return <div className="text-center p-6">Loading...</div>;
+  }
 
   const hadnleLogout = () => {
     Cookies.remove("userId");
@@ -52,9 +36,9 @@ export default function Home() {
 
             <NavigationMenuItem>
               <NavigationMenuTrigger className="flex items-center gap-2">
-                {username || "Guest"}
+                {user.username}
                 <Avatar className="w-8 h-8 ml-2">
-                  <AvatarImage src={avatar || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="@shadcn" className="rounded-xl object-cover w-full h-full"/>
+                  <AvatarImage src={user.avatar} alt="@shadcn" className="rounded-xl object-cover w-full h-full"/>
                 </Avatar>
               </NavigationMenuTrigger>
               <NavigationMenuContent className="p-2 w-40 bg-white shadow-lg rounded-md ">
