@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useLoginMutation } from "@/redux/services/api"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function LoginForm({
   className,
@@ -83,7 +84,7 @@ export function LoginForm({
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    />
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Login
@@ -91,9 +92,9 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link href="/auth/register" className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </div>
           </form>
