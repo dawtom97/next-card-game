@@ -28,7 +28,7 @@ export const chatApi = createApi({
         method: "POST",
         body: message,
       }),
-      // invalidatesTags: ["Messages"],
+      invalidatesTags: ["Messages"],
     }),
     getConversationMessages: builder.query<
       PaginatedMessages,
@@ -44,9 +44,9 @@ export const chatApi = createApi({
         method: "GET",
         params: { authorId, recipientId, page, pageSize },
       }),
-      // providesTags: (result, error, { authorId, recipientId }) => [
-      //   { type: "Messages", id: `${authorId}-${recipientId}` },
-      // ],
+      providesTags: (result, error, { authorId, recipientId }) => [
+        { type: "Messages", id: `${authorId}-${recipientId}` },
+      ],
     }),
   }),
 });

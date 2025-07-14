@@ -5,7 +5,9 @@ export const user = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/users",
     credentials: "include",
+
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getAllUsers: builder.query({
       query: () => ({
@@ -18,6 +20,7 @@ export const user = createApi({
         url: `/${id}`,
         method: "GET",
       }),
+      providesTags: (result, error, id) => [{ type: "User", id }],
     }),
     editUser: builder.mutation({
       query: ({ id, avatar, username }) => ({
@@ -25,6 +28,7 @@ export const user = createApi({
         method: "POST",
         body: { avatar, username },
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
