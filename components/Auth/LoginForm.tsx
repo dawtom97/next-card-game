@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useLoginMutation } from "@/redux/services/api"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -35,7 +36,8 @@ export function LoginForm({
       router.push("/")
     }
     catch (error) {
-      console.error("Login failed:", error)
+      const err = error as { data?: { message?: string } }
+      toast.error(err?.data?.message || "Login failed")
     }
   }
 
