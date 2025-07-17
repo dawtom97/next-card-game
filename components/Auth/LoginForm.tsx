@@ -15,6 +15,7 @@ import { useLoginMutation } from "@/redux/services/api"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
+
 export function LoginForm({
   className,
   ...props
@@ -85,7 +86,7 @@ export function LoginForm({
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    />
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Login
@@ -93,9 +94,9 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link href="/auth/register" className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </div>
           </form>

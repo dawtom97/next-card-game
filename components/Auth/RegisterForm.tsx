@@ -13,6 +13,7 @@ import { useState } from "react"
 import { useRegisterMutation } from "@/redux/services/api"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import Link from "next/link"
 
 
 export function RegisterForm({
@@ -129,10 +130,10 @@ export function RegisterForm({
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Sign up
-                </a>
+                Already have an account?{" "}
+                <Link href="/auth/login" className="underline underline-offset-4">
+                  Sign in
+                </Link>
               </div>
             </div>
           </form>
