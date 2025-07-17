@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
+import { useGetAllUsersQuery } from "@/redux/services/user";
 
 export interface Message {
   id: string;
@@ -17,19 +18,26 @@ export interface Message {
 
 export function ChatSidebar({
   messages = [],
+  onSetRecipient = () => {},
   onSendMessage,
 }: {
   messages?: Message[];
-  onSendMessage?: (msg: string, username: string, userId: string) => void;
+
+  onSendMessage?: (msg: string) => void;
+  onSetRecipient?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }) {
   const [open, setOpen] = React.useState(true);
   const [input, setInput] = React.useState("");
-  const [username, setUsername] = React.useState("");
+
+
+  const {data: users}= useGetAllUsersQuery(null);
+
+  console.log(users)
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && onSendMessage) {
-      onSendMessage(input, username, "685c1031a26c0e074428852a");
+      onSendMessage(input);
       setInput("");
     }
   };
@@ -66,12 +74,13 @@ export function ChatSidebar({
           )}
         </ScrollArea>
         <form onSubmit={handleSend} className="border-t p-4 space-y-2">
-          <Input
-            placeholder="Usernamee"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="flex-1"
-          />
+          <select onChange={onSetRecipient}>
+            {users?.map((user) => (
+              <option key={user.id} value={JSON.stringify({ id: user.id, username: user.username })}>
+                {user.username}
+              </option>
+            ))}
+          </select>
           <Input
             placeholder="Napisz wiadomość..."
             value={input}

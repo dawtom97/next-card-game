@@ -1,6 +1,5 @@
 "use client";
 
-import { Toaster } from "sonner";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -68,7 +67,7 @@ export default function Home() {
       </div>
 
       <h1 className="text-center text-2xl font-bold mt-10">Hello</h1>
-      <Toaster richColors position="top-center" />
+
     </div>
   )
 }
