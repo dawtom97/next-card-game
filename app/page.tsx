@@ -30,7 +30,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
+    <div className="max-w-6xl mx-auto px-4">
       <div className="flex justify-center mt-6">
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
@@ -74,7 +74,7 @@ export default function Home() {
         <AddCardDialog />
 
       </div>
-      
+
       <div className="mt-10">
         <h2 className="text-center text-xl font-semibold mb-4">Your Cards</h2>
         <DisplayCards />  

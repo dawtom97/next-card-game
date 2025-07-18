@@ -196,8 +196,8 @@ export function AddCardDialog() {
 
                         </div>
                         <div className="grid gap-3">
-                            <Label htmlFor="img-path">Image Path</Label>
-                            <Input id="img-path" name="imgPath" value={formData.imgPath} onChange={handleChange} />
+                            <Label htmlFor="img-path">Image name</Label>
+                            <Input id="img-path" name="imgPath" placeholder="geralt_z_rivii.png" value={formData.imgPath} onChange={handleChange} />
                         </div>
                     </div>
                     <DialogFooter>
